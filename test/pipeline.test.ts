@@ -257,7 +257,22 @@ function captureFace(colors: RGB[], cond: Conditions): { rgb: RGB[]; retries: nu
   return { rgb: new Array(9).fill({ r: 128, g: 128, b: 128 }), retries: 5 };
 }
 
-function runTrials(cond: Conditions, trials: number) {
+/**
+ * Rendre la main entre deux cubes.
+ *
+ * Un scenario complet tient la boucle d'evenements ~190 secondes d'affilee.
+ * Pendant ce temps le worker de test ne peut plus repondre au rapporteur, qui
+ * abandonne : `[vitest-worker]: Timeout calling "onTaskUpdate"`. Aucun test
+ * n'echoue, mais vitest compte une erreur et sort en code 1 — l'integration
+ * continue passe au rouge sur une suite entierement verte.
+ *
+ * Une pause de longueur nulle entre chaque cube suffit : elle rend la main a la
+ * boucle d'evenements, le message passe, et le cout est negligeable devant les
+ * ~6 secondes que coute un cube.
+ */
+const rendreLaMain = () => new Promise<void>((r) => setTimeout(r, 0));
+
+async function runTrials(cond: Conditions, trials: number) {
   let exact = 0;
   let exactFinal = 0;
   let validFinal = 0;
@@ -266,6 +281,7 @@ function runTrials(cond: Conditions, trials: number) {
   let rescans = 0;
 
   for (let t = 0; t < trials; t++) {
+    await rendreLaMain();
     const state = t === 0 ? SOLVED_FACELETS : applyAlg(SOLVED_FACELETS, randomScramble(22));
     const scheme = shuffle(COLOR_NAMES);
     const faceColor: Record<string, RGB> = {};
@@ -333,16 +349,16 @@ function runTrials(cond: Conditions, trials: number) {
 }
 
 describe('chaine complete pixel -> etat du cube', () => {
-  it('bonnes conditions', () => {
-    const r = runTrials(BON, 30);
+  it('bonnes conditions', async () => {
+    const r = await runTrials(BON, 30);
     console.log('  BON        ->', JSON.stringify(r));
     // mesure typique : 97 a 100 %
     expect(r.exactFinal).toBeGreaterThanOrEqual(0.95);
     expect(r.valideFinal - r.exactFinal).toBeLessThanOrEqual(0.05);
   }, 600000);
 
-  it('conditions realistes (reflets, ombrage, derive de blancs, grille imprecise)', () => {
-    const r = runTrials(REALISTE, 30);
+  it('conditions realistes (reflets, ombrage, derive de blancs, grille imprecise)', async () => {
+    const r = await runTrials(REALISTE, 30);
     console.log('  REALISTE   ->', JSON.stringify(r));
     // mesure sur plusieurs executions : 93 a 100 % de lectures finales exactes.
     // Le seuil reste sous la fourchette observee plutot que de rendre le test
@@ -359,10 +375,10 @@ describe('chaine complete pixel -> etat du cube', () => {
   // le taux de reussite — l'utilisateur, lui, deplacerait le cube ou allumerait
   // une lampe — mais le taux de MENSONGE SILENCIEUX : produire un cube valide
   // mais faux, qu'on resoudrait sans jamais s'en apercevoir.
-  it('conditions hostiles : degradation maitrisee, jamais de mensonge silencieux', () => {
+  it('conditions hostiles : degradation maitrisee, jamais de mensonge silencieux', async () => {
     // moins d'essais : en conditions hostiles chaque face epuise ses
     // tentatives, et le scenario coute une trentaine de rendus par cube
-    const r = runTrials(HOSTILE, 18);
+    const r = await runTrials(HOSTILE, 18);
     console.log('  HOSTILE    ->', JSON.stringify(r));
     const mensonge = r.valideFinal - r.exactFinal;
     console.log(`  mensonges silencieux : ${(mensonge * 100).toFixed(1)} %`);
