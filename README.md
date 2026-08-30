@@ -1,5 +1,9 @@
 # Rubik'Scam
 
+[![CI](https://github.com/diamesene02/rubikscam/actions/workflows/ci.yml/badge.svg)](https://github.com/diamesene02/rubikscam/actions/workflows/ci.yml)
+[![Licence MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
+[![Aucun réseau](https://img.shields.io/badge/données-100%25%20locales-brightgreen.svg)](#vie-privée)
+
 Scanner et guide de résolution de Rubik's Cube, dans le navigateur.
 Tu montres les 6 faces à la caméra, l'application lit les couleurs, calcule la
 solution, **puis éteint la caméra** et t'affiche les mouvements un par un : la
@@ -566,9 +570,20 @@ npm run test:complet # tout, y compris le rendu au pixel (~6 min)
 Les deux passes tournent en intégration continue à chaque poussée
 ([.github/workflows/ci.yml](.github/workflows/ci.yml)).
 
+## Auteur
+
+**Diame Sene** — Co-founder & CTO [@Gunoor](https://dsene.dev), location de
+voitures entre particuliers au Sénégal. IA appliquée, outillage d'agents,
+mobile money. Dakar & Paris.
+
+- 🌍 Portfolio — [dsene.dev](https://dsene.dev)
+- 💼 LinkedIn — [diame-sene](https://linkedin.com/in/diame-sene)
+- 🐙 GitHub — [@diamesene02](https://github.com/diamesene02)
+- 📦 Produits IA — [diamesene.gumroad.com](https://diamesene.gumroad.com)
+
 ## Licence
 
-[MIT](LICENSE).
+[MIT](LICENSE) © 2026 Diame Sene.
 
 Le solveur [cubejs](https://github.com/ldez/cubejs) (Kociemba en deux phases)
 est également sous licence MIT ; son avis de copyright est reproduit dans

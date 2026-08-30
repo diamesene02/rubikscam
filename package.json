@@ -5,6 +5,15 @@
   "type": "module",
   "license": "MIT",
   "description": "Scanner et guide de resolution de Rubik's Cube par camera, entierement dans le navigateur",
+  "author": "Diame Sene (https://dsene.dev)",
+  "homepage": "https://github.com/diamesene02/rubikscam#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diamesene02/rubikscam.git"
+  },
+  "bugs": {
+    "url": "https://github.com/diamesene02/rubikscam/issues"
+  },
   "keywords": [
     "rubiks-cube",
     "cube-solver",

@@ -731,6 +731,22 @@ body.mode-demo .resolution-grille {
   justify-content: center;
   flex-wrap: wrap;
 }
+/* Credit discret : meme discretion que les pastilles d'etat, alignement inclus. */
+.credit {
+  font-size: 11.5px;
+  color: var(--texte-doux);
+  align-self: center;
+}
+.credit a {
+  color: var(--texte-doux);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.credit a:hover,
+.credit a:focus-visible {
+  color: var(--accent);
+}
+
 .pastille {
   font-size: 11.5px;
   color: var(--texte-doux);
