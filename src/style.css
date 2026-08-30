@@ -1,0 +1,1087 @@
+:root {
+  --fond: #080b12;
+  --fond-2: #0f1524;
+  --fond-3: #17203a;
+  --bord: #263148;
+  --texte: #e8edf7;
+  --texte-doux: #94a3c0;
+  --accent: #4ade80;
+  --accent-fonce: #16a34a;
+  --alerte: #fb7185;
+  --attention: #fbbf24;
+  --rayon: 16px;
+  --ombre: 0 18px 40px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* `.ecran { display: flex }` l'emporterait sur le display:none par defaut de
+   l'attribut hidden : on retablit la priorite. */
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--fond);
+  color: var(--texte);
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+
+body {
+  background:
+    radial-gradient(1100px 600px at 15% -10%, rgba(56, 89, 168, 0.18) 0%, transparent 60%),
+    radial-gradient(900px 500px at 110% 0%, rgba(74, 222, 128, 0.08) 0%, transparent 55%),
+    var(--fond);
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+}
+
+/* ---------- barre du haut ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--bord);
+  background: rgba(8, 11, 18, 0.8);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.brand-mark {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background:
+    linear-gradient(135deg, #f5f5f2 0 33%, #c8321f 33% 66%, #149c4e 66% 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.brand-text em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  border: 1px solid var(--bord);
+  background: var(--fond-2);
+  color: var(--texte);
+  font-size: 17px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+.icon-btn:hover {
+  background: var(--fond-3);
+}
+.icon-btn:active {
+  transform: scale(0.94);
+}
+.icon-btn.actif {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---------- structure ---------- */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 16px;
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.ecran {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  animation: apparition 0.25s ease;
+}
+
+@keyframes apparition {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ecran {
+    animation: none;
+  }
+}
+
+/* ---------- accueil ---------- */
+.hero {
+  max-width: 680px;
+  margin: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px 0;
+}
+
+.hero h1 {
+  font-size: clamp(30px, 6vw, 46px);
+  line-height: 1.05;
+  margin: 0;
+  letter-spacing: -0.03em;
+}
+
+.sous-titre {
+  color: var(--texte-doux);
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.atouts {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: grid;
+  gap: 10px;
+  text-align: left;
+}
+
+.atouts li {
+  background: var(--fond-2);
+  border: 1px solid var(--bord);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--texte-doux);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.atouts strong {
+  color: var(--texte);
+}
+
+/* ---------- boutons ---------- */
+button.primaire,
+button.secondaire {
+  border-radius: 12px;
+  padding: 14px 22px;
+  font-size: 15px;
+  font-weight: 620;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.1s ease, filter 0.15s ease, background 0.15s ease;
+  font-family: inherit;
+}
+button.compact {
+  padding: 11px 16px;
+  font-size: 14px;
+}
+button.primaire {
+  background: linear-gradient(180deg, #4ade80, #22c55e);
+  color: #06210f;
+}
+button.primaire:hover {
+  filter: brightness(1.08);
+}
+button.secondaire {
+  background: var(--fond-2);
+  border-color: var(--bord);
+  color: var(--texte);
+}
+button.secondaire:hover {
+  background: var(--fond-3);
+}
+button:active {
+  transform: scale(0.97);
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---------- scene camera ---------- */
+.stage {
+  position: relative;
+  width: 100%;
+  border-radius: var(--rayon);
+  overflow: hidden;
+  background: #05070c;
+  border: 1px solid var(--bord);
+  box-shadow: var(--ombre);
+  aspect-ratio: 4 / 3;
+  max-height: 58vh;
+  margin: 0 auto;
+}
+
+.stage video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.overlay-host,
+.overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(8, 11, 18, 0.78);
+  border: 1px solid var(--bord);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- panneaux ---------- */
+.panneau {
+  background: var(--fond-2);
+  border: 1px solid var(--bord);
+  border-radius: var(--rayon);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.panneau.large {
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
+}
+.panneau.centre {
+  text-align: center;
+  align-items: center;
+  max-width: 520px;
+  margin: auto;
+}
+
+.consigne h2 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+}
+.consigne p {
+  margin: 0;
+  color: var(--texte-doux);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.cible {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--fond-3);
+  border: 1px solid var(--bord);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.cible-pastille.petite {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  border-radius: 5px;
+  display: inline-block;
+  vertical-align: -3px;
+  margin-right: 8px;
+  border-width: 1px;
+  box-shadow: none;
+}
+
+.cible-pastille {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 9px;
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.scan-corps {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.hint-3d {
+  height: 150px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.scan-cote {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faces-progress {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.face-pastille {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  border: 2px solid var(--bord);
+  background: var(--fond-3);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--texte-doux);
+}
+.face-pastille.faite {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.face-pastille.courante {
+  border-color: var(--texte);
+  color: var(--texte);
+  box-shadow: 0 0 0 3px rgba(232, 237, 247, 0.12);
+}
+
+.message {
+  margin: 0;
+  font-size: 14px;
+  min-height: 20px;
+  color: var(--texte-doux);
+  line-height: 1.45;
+}
+.message.alerte {
+  color: var(--alerte);
+}
+.message.ok {
+  color: var(--accent);
+}
+.message.attention {
+  color: var(--attention);
+}
+
+.ligne-boutons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ---------- patron ---------- */
+.diagnostic {
+  border: 1px solid var(--bord);
+  border-radius: 12px;
+  padding: 10px 14px;
+  background: var(--fond-3);
+}
+
+.diagnostic summary {
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--texte-doux);
+}
+
+.diagnostic textarea {
+  width: 100%;
+  margin-top: 8px;
+  background: var(--fond);
+  color: var(--texte-doux);
+  border: 1px solid var(--bord);
+  border-radius: 8px;
+  padding: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  resize: vertical;
+}
+
+.legende {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.legende-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--texte-doux);
+  background: var(--fond-3);
+  border: 1px solid var(--bord);
+  border-radius: 999px;
+  padding: 4px 10px 4px 5px;
+}
+
+.legende-item.faux {
+  border-color: var(--alerte);
+  color: var(--alerte);
+}
+
+.legende-pastille {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.net-host {
+  display: grid;
+  place-items: center;
+  overflow-x: auto;
+  padding: 6px 0;
+}
+
+.net {
+  display: grid;
+  grid-template-columns: repeat(12, var(--taille-case, 26px));
+  /* Une ligne mince avant chaque bande, pour porter le repere de face. */
+  grid-template-rows:
+    15px repeat(3, var(--taille-case, 26px))
+    15px repeat(3, var(--taille-case, 26px))
+    15px repeat(3, var(--taille-case, 26px));
+  gap: 3px;
+}
+
+.net-cell {
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  border-radius: 5px;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.15s ease;
+}
+.net-cell:hover:not(:disabled) {
+  transform: scale(1.12);
+  z-index: 2;
+}
+.net-cell.centre {
+  /* Cliquable : echange la face avec celle qui porte cette couleur au centre. */
+  cursor: pointer;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.5);
+}
+.net-cell.doute {
+  box-shadow: 0 0 0 2px var(--attention);
+  z-index: 1;
+}
+.net-cell.erreur {
+  box-shadow: 0 0 0 2px var(--alerte);
+  z-index: 1;
+}
+
+/* ---------- resolution ---------- */
+.resolution-grille {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.colonne-consigne {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mouvement-carte {
+  background: var(--fond-2);
+  border: 1px solid var(--bord);
+  border-radius: var(--rayon);
+  padding: 16px 18px;
+  text-align: center;
+}
+
+.mouvement-entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--texte-doux);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.etat-suivi {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.etat-suivi::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--texte-doux);
+}
+.etat-suivi.ok::before {
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+.etat-suivi.perdu::before {
+  background: var(--alerte);
+}
+
+.move-principal {
+  font-size: clamp(56px, 16vw, 92px);
+  font-weight: 750;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  margin: 6px 0 2px;
+  font-variant-ligatures: none;
+}
+
+.move-principal.enchainement {
+  font-size: clamp(34px, 9vw, 56px);
+  letter-spacing: -0.02em;
+}
+
+.etat-suivi.manuel::before {
+  background: var(--attention);
+}
+
+button.attire {
+  animation: pulsation 1.6s ease-in-out infinite;
+}
+@keyframes pulsation {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5); }
+  50% { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  button.attire { animation: none; }
+}
+
+.move-libelle {
+  color: var(--texte-doux);
+  font-size: 15px;
+}
+
+.move-suite {
+  margin-top: 12px;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+  min-height: 30px;
+}
+
+.move-chip {
+  background: var(--fond-3);
+  border: 1px solid var(--bord);
+  border-radius: 8px;
+  padding: 5px 9px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--texte-doux);
+}
+.move-chip.prochain {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.cube-host {
+  display: grid;
+  place-items: center;
+  min-height: 230px;
+}
+
+.barre-progression {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--fond-3);
+  overflow: hidden;
+}
+.barre-remplie {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #22c55e, #4ade80);
+  transition: width 0.3s ease;
+}
+
+.stage-slot {
+  min-height: 0;
+}
+/* pendant la resolution, la camera reste visible mais discrete */
+#ecran-resolution .stage {
+  max-height: 42vh;
+}
+/* en mode demo il n'y a pas de camera : la consigne prend toute la largeur */
+body.mode-demo .colonne-camera {
+  display: none;
+}
+body.mode-demo .resolution-grille {
+  grid-template-columns: 1fr;
+  max-width: 620px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.fini {
+  font-size: 30px;
+  margin: 0;
+}
+
+.note {
+  color: var(--texte-doux);
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ---------- cube 3D ---------- */
+.cube3d {
+  width: 230px;
+  height: 230px;
+  perspective: 900px;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+.cube3d:active {
+  cursor: grabbing;
+}
+.cube3d-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.35s ease;
+}
+.cube3d-sticker {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.55);
+  backface-visibility: hidden;
+}
+.hint-3d .cube3d {
+  width: 140px;
+  height: 140px;
+  perspective: 600px;
+  /* Les facettes sont placees en pixels fixes : `width` ne redimensionne pas
+     le cube. Seule une mise a l'echelle du conteneur de perspective le fait —
+     sans elle, le cube deborde sur les boutons, d'autant plus qu'il tourne
+     maintenant d'un quart de tour. */
+  transform: scale(0.58);
+}
+.hint-3d .cube3d-sticker {
+  border-radius: 4px;
+}
+
+/* ---------- barre d etat ---------- */
+.statusbar {
+  display: flex;
+  gap: 10px;
+  padding: 8px 16px 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.pastille {
+  font-size: 11.5px;
+  color: var(--texte-doux);
+  background: var(--fond-2);
+  border: 1px solid var(--bord);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-variant-numeric: tabular-nums;
+}
+.pastille.pret {
+  color: var(--accent);
+  border-color: rgba(74, 222, 128, 0.4);
+}
+
+/* ---------- grands ecrans ---------- */
+@media (min-width: 900px) {
+  .resolution-grille {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  .net {
+    --taille-case: 34px;
+  }
+  #ecran-resolution .stage {
+    max-height: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .cible {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--fond-3);
+  border: 1px solid var(--bord);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.cible-pastille.petite {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  border-radius: 5px;
+  display: inline-block;
+  vertical-align: -3px;
+  margin-right: 8px;
+  border-width: 1px;
+  box-shadow: none;
+}
+
+.cible-pastille {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 9px;
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.scan-corps {
+    grid-template-columns: 110px 1fr;
+  }
+  .hint-3d {
+    height: 110px;
+  }
+  .hint-3d .cube3d {
+    width: 105px;
+    height: 105px;
+    transform: scale(0.44);
+  }
+  .cube3d {
+    width: 190px;
+    height: 190px;
+  }
+  main {
+    padding: 12px;
+  }
+}
+
+/* --- Les 6 gestes du scan, illustres --- */
+.parcours {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+}
+
+.parcours-carte {
+  background: var(--fond-3);
+  border: 1px solid var(--bord);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.parcours-rang {
+  align-self: flex-start;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--texte-doux);
+  border: 1px solid var(--bord);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+.parcours-cube {
+  height: 172px;
+  display: grid;
+  place-items: center;
+  /* Les stickers sont places en pixels fixes puis projetes en 3D : le cube
+     rendu deborde toujours de sa boite. Sans confinement, il recouvre le
+     titre de la carte. */
+  overflow: hidden;
+}
+
+.parcours-cube .cube3d {
+  width: 140px;
+  height: 140px;
+  perspective: 620px;
+  /* `width` ne redimensionne PAS le cube (ses facettes sont en px fixes) :
+     seule une mise a l'echelle du conteneur de perspective le fait. */
+  transform: scale(0.68);
+}
+
+.parcours-cube .cube3d-sticker {
+  border-radius: 4px;
+}
+
+.parcours-titre {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 640;
+  letter-spacing: -0.01em;
+}
+
+.parcours-detail {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--texte-doux);
+}
+
+/* --- Pastille de couleur : quelle face tourner, sans dependre du point de vue --- */
+.move-pastille {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: inline-block;
+  vertical-align: -5px;
+  margin-right: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.move-chip {
+  border-left-width: 4px;
+}
+
+/* --- Consigne en deux temps : la couleur d'abord, le geste ensuite --- */
+.move-bandeau {
+  border-radius: 14px;
+  padding: 18px 16px 14px;
+  margin: 6px 0 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* La couleur de fond est posee par le script : c'est elle, la consigne. */
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.22);
+}
+
+.move-nom {
+  font-size: clamp(38px, 12vw, 78px);
+  font-weight: 750;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.move-position {
+  font-size: clamp(15px, 4vw, 20px);
+  font-weight: 600;
+  opacity: 0.82;
+}
+
+.move-garde {
+  margin: 10px 0 0;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--texte-doux);
+}
+
+.move-dessin {
+  height: 168px;
+  display: grid;
+  place-items: center;
+  margin: 4px 0 10px;
+}
+
+.move-dessin svg {
+  max-height: 168px;
+}
+
+.move-devant {
+  font-size: clamp(13px, 3.4vw, 16px);
+  font-weight: 600;
+  opacity: 0.78;
+  margin-top: 2px;
+}
+
+.move-devant .ancrage-pastille {
+  border-color: rgba(0, 0, 0, 0.5);
+}
+
+.move-geste {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(18px, 5vw, 27px);
+  font-weight: 620;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.move-bas {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--texte-doux);
+}
+
+.move-notation {
+  border: 1px solid var(--bord);
+  border-radius: 7px;
+  padding: 3px 9px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.move-restant {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Les trois paires de faces opposees : verification en cinq secondes --- */
+.opposes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.oppose {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--fond-3);
+  border: 1px solid var(--bord);
+  border-radius: 999px;
+  padding: 5px 12px 5px 6px;
+  font-size: 13px;
+  color: var(--texte-doux);
+}
+
+.oppose-pastille {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+}
+
+/* --- L'ancrage : comment tenir son cube pour comparer le patron --- */
+.verif-ancrage {
+  margin: 6px 0 0;
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: var(--fond-3);
+  border: 1px solid var(--bord);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.ancrage-pastille {
+  width: 19px;
+  height: 19px;
+  border-radius: 6px;
+  display: inline-block;
+  vertical-align: -4px;
+  margin: 0 3px;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+}
+
+/* --- Mode « tourner une face » --- */
+button[aria-pressed='true'] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.net-rotation .net-cell {
+  cursor: alias;
+}
+
+.net-rotation .net-cell.centre {
+  cursor: alias;
+}
+
+/* --- La face attendue : verification en un coup d'oeil, a chaque mouvement --- */
+.move-attendu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.move-attendu-titre {
+  font-size: 12.5px;
+  color: var(--texte-doux);
+  letter-spacing: 0.01em;
+}
+
+.attendu-grille {
+  display: grid;
+  grid-template-columns: repeat(3, 26px);
+  grid-template-rows: repeat(3, 26px);
+  gap: 3px;
+}
+
+.attendu-case {
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+}
+
+/* --- Les reperes du patron : quelle face est le haut, la gauche… --- */
+.net-etiquette {
+  align-self: end;
+  justify-self: center;
+  font-size: 10.5px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texte-doux);
+  pointer-events: none;
+}

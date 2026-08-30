@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1"
+    />
+    <meta name="theme-color" content="#0b0f19" />
+    <meta
+      name="description"
+      content="Scanne ton Rubik's Cube avec la camera et suis les mouvements a faire, en direct."
+    />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0f19'/%3E%3Crect x='6' y='6' width='6' height='6' rx='1.5' fill='%23f5f5f2'/%3E%3Crect x='13' y='6' width='6' height='6' rx='1.5' fill='%23c8321f'/%3E%3Crect x='20' y='6' width='6' height='6' rx='1.5' fill='%23149c4e'/%3E%3Crect x='6' y='13' width='6' height='6' rx='1.5' fill='%23f2ce22'/%3E%3Crect x='13' y='13' width='6' height='6' rx='1.5' fill='%231b4fbf'/%3E%3Crect x='20' y='13' width='6' height='6' rx='1.5' fill='%23e8701a'/%3E%3Crect x='6' y='20' width='6' height='6' rx='1.5' fill='%23149c4e'/%3E%3Crect x='13' y='20' width='6' height='6' rx='1.5' fill='%23f5f5f2'/%3E%3Crect x='20' y='20' width='6' height='6' rx='1.5' fill='%23c8321f'/%3E%3C/svg%3E"
+    />
+    <title>Rubik'Scam — scanner et guide en direct</title>
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-text">Rubik'<em>Scam</em></span>
+        </div>
+        <div class="topbar-actions">
+          <button id="btn-torche" class="icon-btn" type="button" title="Lampe" hidden>🔦</button>
+          <button id="btn-camera" class="icon-btn" type="button" title="Changer de camera" hidden>
+            🔄
+          </button>
+          <button id="btn-voix" class="icon-btn" type="button" title="Annonces vocales" hidden>
+            🔈
+          </button>
+          <button id="btn-recommencer" class="icon-btn" type="button" title="Recommencer" hidden>
+            ↺
+          </button>
+        </div>
+      </header>
+
+      <main id="main">
+        <!-- ACCUEIL -->
+        <section id="ecran-accueil" class="ecran">
+          <div class="hero">
+            <h1>Ton cube, resolu en direct</h1>
+            <p class="sous-titre">
+              Montre les 6 faces a la camera. L'application lit les couleurs, calcule la solution,
+              puis eteint la camera et t'affiche les mouvements un par un, avec la couleur a mettre
+              en haut a chaque fois.
+            </p>
+            <div class="hero-actions">
+              <button id="btn-demarrer" class="primaire" type="button">
+                Activer la camera et scanner
+              </button>
+              <button id="btn-demo" class="secondaire" type="button">
+                Essayer sans cube (demo)
+              </button>
+              <button id="btn-parcours" class="secondaire" type="button">
+                Comment scanner ?
+              </button>
+            </div>
+            <p id="accueil-etat" class="note"></p>
+            <ul class="atouts">
+              <li><strong>Fluide</strong> — analyse a la cadence de la camera, sans a-coups.</li>
+              <li>
+                <strong>Fiable</strong> — lecture verifiee par les contraintes physiques du cube,
+                relecture automatique des faces douteuses, correction manuelle possible.
+              </li>
+              <li>
+                <strong>Sans camera apres le scan</strong> — une fois les 6 faces lues, la camera
+                s'eteint. Chaque consigne dit quelle couleur amener en haut, puis quoi tourner :
+                aucun point de vue suppose.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- PARCOURS : les 6 gestes, illustres -->
+        <section id="ecran-parcours" class="ecran" hidden>
+          <div class="panneau large">
+            <div class="consigne">
+              <h2>Les 6 gestes du scan</h2>
+              <p>
+                Un seul quart de tour entre deux faces. Les cubes ci-dessous rejouent le geste en
+                boucle — tu peux aussi les faire tourner au doigt.
+              </p>
+              <p>
+                <strong>Important :</strong> ces cubes sont montres <strong>tels que la camera les
+                voit</strong>, pas tels que tu les vois. La camera te fait face : ce qui apparait a
+                droite de l'ecran se trouve a ta gauche.
+              </p>
+            </div>
+            <div id="parcours-liste" class="parcours"></div>
+            <p class="note">
+              <strong>Bonne nouvelle :</strong> si tu te trompes d'ordre ou si tu presentes une
+              face a l'envers, l'application le rattrape toute seule. Ce qui compte vraiment, c'est
+              de montrer les <strong>6 faces differentes</strong>, bien a plat, avec assez de
+              lumiere.
+            </p>
+            <div class="ligne-boutons">
+              <button id="btn-parcours-scanner" class="primaire" type="button">
+                Activer la camera et scanner
+              </button>
+              <button id="btn-parcours-retour" class="secondaire" type="button">Retour</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCAN -->
+        <section id="ecran-scan" class="ecran" hidden>
+          <div class="stage" id="stage">
+            <video id="video" playsinline muted autoplay></video>
+            <div id="stage-overlay-host" class="overlay-host"></div>
+            <div id="scan-badge" class="badge">1 / 6</div>
+          </div>
+          <div class="panneau">
+            <div class="consigne">
+              <h2 id="scan-titre">Presente une face dans la grille</h2>
+              <p id="scan-detail">Cette premiere face sert de reference pour tout le scan.</p>
+              <div id="relecture-cible" class="cible" hidden>
+                <span class="cible-pastille" id="relecture-couleur"></span>
+                <span>Montre la face dont le <strong>centre</strong> est de cette couleur.</span>
+              </div>
+            </div>
+            <div class="scan-corps">
+              <div id="scan-hint" class="hint-3d"></div>
+              <div class="scan-cote">
+                <div id="scan-faces" class="faces-progress"></div>
+                <p id="scan-message" class="message"></p>
+                <div class="ligne-boutons">
+                  <button id="btn-capturer" class="primaire compact" type="button">
+                    Capturer maintenant
+                  </button>
+                  <button id="btn-refaire" class="secondaire compact" type="button">
+                    Refaire cette face
+                  </button>
+                  <button id="btn-passer" class="secondaire compact" type="button" hidden>
+                    Passer a la verification
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VERIFICATION -->
+        <section id="ecran-verif" class="ecran" hidden>
+          <div class="panneau large">
+            <div class="consigne">
+              <h2 id="verif-titre">Verifie les couleurs</h2>
+              <!--
+                L'ANCRAGE est la piece qui manquait : sans lui, l'utilisateur
+                compare les couleurs du patron mais jamais les POSITIONS, et un
+                placement faux — qui differe pourtant sur 36 stickers sur 54 en
+                mediane — lui parait juste.
+              -->
+              <p id="verif-ancrage" class="verif-ancrage"></p>
+              <p id="verif-detail">
+                Appuie sur un sticker pour changer sa couleur. Appuie sur un
+                <strong>centre</strong> pour echanger deux faces, quand l'une est au mauvais
+                endroit. Les lectures les moins nettes sont encadrees.
+
+              </p>
+            </div>
+            <div id="net-host" class="net-host"></div>
+            <div id="legende" class="legende"></div>
+            <p id="verif-message" class="message"></p>
+            <details id="bloc-diagnostic" class="diagnostic" hidden>
+              <summary>Mesures brutes (a copier si la lecture reste fausse)</summary>
+              <p class="note">
+                Ces chiffres sont ce que la camera a mesure, avant tout
+                traitement. Selectionne tout et copie.
+              </p>
+              <textarea id="diagnostic-texte" readonly rows="4" spellcheck="false"></textarea>
+            </details>
+            <div class="ligne-boutons">
+              <button id="btn-resoudre" class="primaire" type="button">Resoudre</button>
+              <button id="btn-relire" class="secondaire" type="button" hidden>
+                <span class="cible-pastille petite" id="relire-couleur"></span>
+                Relire cette face
+              </button>
+              <button id="btn-tourner-face" class="secondaire" type="button" aria-pressed="false">
+                ↻ Tourner une face
+              </button>
+              <button id="btn-autre-lecture" class="secondaire" type="button" hidden>
+                Autre lecture
+              </button>
+              <button id="btn-rescanner" class="secondaire" type="button">Rescanner</button>
+              <button id="btn-diagnostic" class="secondaire" type="button" title="Copier les mesures brutes">
+                Copier le diagnostic
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- RESOLUTION -->
+        <section id="ecran-resolution" class="ecran" hidden>
+          <div class="resolution-grille">
+            <div class="colonne-consigne">
+              <div class="mouvement-carte">
+                <div class="mouvement-entete">
+                  <span id="move-compteur" class="compteur">1 / 20</span>
+                </div>
+                <!-- Premier temps : quelle couleur amener en haut. -->
+                <div id="move-bandeau" class="move-bandeau">
+                  <span id="move-nom" class="move-nom">rouge</span>
+                  <span id="move-position" class="move-position"></span>
+                  <!-- Second ancrage : sans lui l'apercu de la face n'est vrai
+                       qu'a une rotation pres, et parait faux. -->
+                  <span id="move-devant" class="move-devant"></span>
+                </div>
+                <!-- Quand aucune reorientation n'est necessaire. -->
+                <p id="move-garde" class="move-garde" hidden>Garde ton cube comme il est.</p>
+                <!-- Le geste, dessine : une fleche plate, lisible a tout angle. -->
+                <div id="move-dessin" class="move-dessin"></div>
+                <!-- Second temps : le geste sur la couche du haut. -->
+                <p id="move-geste" class="move-geste">
+                  Pose un doigt sur le dessus et pousse-le vers la GAUCHE.
+                </p>
+                <!--
+                  Verification continue : la face que l'utilisateur vient de
+                  mettre en haut doit ressembler a ceci. Une erreur se voit
+                  alors au mouvement suivant, et non au bout de vingt.
+                -->
+                <div id="move-attendu" class="move-attendu">
+                  <span id="move-attendu-titre" class="move-attendu-titre">le dessus doit ressembler EXACTEMENT a</span>
+                  <div id="move-attendu-grille" class="attendu-grille"></div>
+                </div>
+                <div class="move-bas">
+                  <span id="move-notation" class="move-notation">R</span>
+                  <span id="move-restant" class="move-restant"></span>
+                </div>
+              </div>
+              <div id="cube-host" class="cube-host"></div>
+              <div class="ligne-boutons">
+                <button id="btn-precedent" class="secondaire compact" type="button">
+                  Precedent
+                </button>
+                <button id="btn-suivant" class="primaire compact" type="button">Fait ✓</button>
+                <button id="btn-relancer-calcul" class="primaire compact" type="button" hidden>
+                  Relancer le calcul
+                </button>
+                <button id="btn-resync" class="secondaire compact" type="button">
+                  Je suis perdu
+                </button>
+                <button id="btn-diag-resolution" class="secondaire compact" type="button"
+                  title="Copier l etat exact, pour analyse">
+                  Copier le diagnostic
+                </button>
+              </div>
+              <p id="resolution-message" class="message"></p>
+              <div class="barre-progression"><div id="progression" class="barre-remplie"></div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FIN -->
+        <section id="ecran-fin" class="ecran" hidden>
+          <div class="panneau centre">
+            <h2 class="fini" id="fin-titre">Ton cube est-il resolu ?</h2>
+            <p id="fin-detail" class="sous-titre"></p>
+            <div class="ligne-boutons">
+              <button id="btn-fin-oui" class="primaire" type="button">Oui, c'est fini 🎉</button>
+              <button id="btn-fin-non" class="secondaire" type="button">Non, il ne l'est pas</button>
+            </div>
+            <p id="fin-aide" class="note" hidden>
+              Alors la lecture de depart etait fausse : les mouvements etaient justes pour un autre
+              cube que le tien. Rescanne — la solution repartira de l'etat reel, quel qu'il soit.
+            </p>
+            <div class="ligne-boutons">
+              <button id="btn-nouveau" class="secondaire" type="button">Scanner ce cube</button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="statusbar">
+        <span id="statut-solveur" class="pastille">solveur : demarrage…</span>
+        <span id="statut-fps" class="pastille"></span>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

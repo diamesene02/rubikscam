@@ -1,0 +1,19 @@
+# Dependances et sorties de build
+node_modules
+dist
+.vite
+
+# Secrets — rien ne doit jamais partir d'ici
+.env
+.env.*
+*.local
+
+# Outillage local, propre a une machine
+.claude/
+.vercel
+.DS_Store
+
+# Document de travail interne : mesures et arbitrages en cours, pas de la
+# documentation. Il cite des chemins locaux et juge des propositions ; il n'a
+# pas sa place dans un depot public.
+PLAN-ameliorations.md

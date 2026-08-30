@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  # Passe rapide : c'est elle qui doit bloquer une fusion.
+  verification:
+    name: Types, build et tests rapides
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Types et build
+        run: npm run build
+      - name: Tests
+        run: npm test
+
+  # Passe lourde : `pipeline` rend de vraies images au pixel pres. Elle tourne
+  # a cote, sans retarder le retour sur la passe rapide.
+  pipeline:
+    name: Chaine complete au niveau pixel
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run test:complet

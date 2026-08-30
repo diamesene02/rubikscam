@@ -1,0 +1,39 @@
+{
+  "name": "rubikscam",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "license": "MIT",
+  "description": "Scanner et guide de resolution de Rubik's Cube par camera, entierement dans le navigateur",
+  "keywords": [
+    "rubiks-cube",
+    "cube-solver",
+    "kociemba",
+    "computer-vision",
+    "webcam",
+    "typescript",
+    "vite",
+    "offline-first"
+  ],
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "dev:https": "HTTPS=1 vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host",
+    "test": "vitest run",
+    "test:complet": "vitest run --config vitest.config.complet.ts",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-basic-ssl": "^2.1.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.5",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "cubejs": "^1.3.2"
+  }
+}
